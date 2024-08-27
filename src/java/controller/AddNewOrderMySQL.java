@@ -1,12 +1,14 @@
-import controller.DBConnection;
+
+package controller;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.Order;
 
 public class AddNewOrderMySQL extends HttpServlet {
@@ -17,34 +19,47 @@ public class AddNewOrderMySQL extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         // Get parameters from the request
-        String name = request.getParameter("foodName");
+        String name = request.getParameter("name"); // Use 'name' parameter
         String processor = request.getParameter("processor");
         String vga = request.getParameter("vga");
         String[] ram = request.getParameterValues("ram");
         String[] storage = request.getParameterValues("storage");
-        int price = Integer.parseInt(request.getParameter("price"));
+
+        // Ensure the price parameter is present and parse it
+        int price = 0;
+        String priceParam = request.getParameter("price");
+        if (priceParam != null && !priceParam.isEmpty()) {
+            try {
+                price = Integer.parseInt(priceParam);
+            } catch (NumberFormatException e) {
+                System.out.println(">>> Invalid price input: " + priceParam);
+                // Handle error: redirect to an error page or set an error attribute
+                return;
+            }
+        }
 
         // Create an instance of Order
         Order order = new Order();
         order.setName(name);
         order.setProcessor(processor);
-        order.setVga(vga); // Correct method name
-        order.setRam(ram); // Correct method name
-        order.setStorage(storage); // Ensure this method exists
+        order.setVga(vga);
+        order.setRam(ram);
+        order.setStorage(storage);
         order.setPrice(price);
 
         // Insert into MySQL: table orders
         DBConnection dbConnection = new DBConnection();
         if (!dbConnection.insertNewOrder(order)) {
             System.out.println(">>> AddNewOrderMySQL ERROR");
+            // Handle insertion error: redirect to an error page or set an error attribute
+        } else {
+            // Successful insertion: forward to success page
+            HttpSession session = request.getSession();
+            session.setAttribute("order", order);
+            ServletContext sc = getServletContext();
+            RequestDispatcher rd = sc.getRequestDispatcher("/addNewOrderSuccess.jsp");
+            rd.forward(request, response);
         }
-
-        // Forward to success page
-        HttpSession session = request.getSession();
-        session.setAttribute("order", order);
-        ServletContext sc = getServletContext();
-        RequestDispatcher rd = sc.getRequestDispatcher("/addNewOrderSuccess.jsp");
-        rd.forward(request, response);
     }
 
     @Override

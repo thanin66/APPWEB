@@ -6,8 +6,9 @@ import model.Order; // Ensure this import matches your Order model class
 public class DBConnection {
 
     public boolean insertNewOrder(Order order) {
-        boolean result = false;
+        boolean result = false; // Initialize result to false
         Connection connection = null;
+        PreparedStatement preparedStatement = null; // Declare PreparedStatement outside try
 
         try {
             // Load the JDBC driver
@@ -19,19 +20,19 @@ public class DBConnection {
 
             String query = "INSERT INTO orders (name, processor, vga, ram, storage, price) " +
                            "VALUES (?, ?, ?, ?, ?, ?)";
+            preparedStatement = connection.prepareStatement(query); // Initialize PreparedStatement
 
-            // Use PreparedStatement to avoid SQL injection
-            try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-                pstmt.setString(1, order.getName());
-                pstmt.setString(2, order.getProcessor());
-                pstmt.setString(3, order.getVga()); // Corrected getter method
-                pstmt.setString(4, String.join(",", order.getRam())); // Corrected getter method and join RAM array
-                pstmt.setString(5, String.join(",", order.getStorage())); // Join Storage array
-                pstmt.setInt(6, order.getPrice());
+            // Set parameters for the prepared statement
+            preparedStatement.setString(1, order.getName());
+            preparedStatement.setString(2, order.getProcessor());
+            preparedStatement.setString(3, order.getVga());
+            preparedStatement.setString(4, String.join(", ", order.getRam())); // Join array to string
+            preparedStatement.setString(5, String.join(", ", order.getStorage())); // Join array to string
+            preparedStatement.setInt(6, order.getPrice());
 
-                int i = pstmt.executeUpdate(); // Execute the update
-                result = i > 0; // Check if rows were affected
-            }
+            // Execute the update and set result to true if successful
+            result = preparedStatement.executeUpdate() > 0; // Return true if at least one row was inserted
+
         } catch (ClassNotFoundException e) {
             System.err.println("JDBC Driver not found: " + e.getMessage());
         } catch (SQLException e) {
@@ -39,7 +40,14 @@ public class DBConnection {
         } catch (Exception e) {
             System.err.println("Unexpected error: " + e.getMessage());
         } finally {
-            // Close connection in finally block to ensure it's closed
+            // Close resources in finally block to ensure they're closed
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close PreparedStatement: " + e.getMessage());
+                }
+            }
             if (connection != null) {
                 try {
                     connection.close();
@@ -49,6 +57,6 @@ public class DBConnection {
             }
         }
 
-        return result;
+        return result; // Return the result of the operation
     }
 }

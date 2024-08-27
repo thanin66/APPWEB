@@ -13,6 +13,15 @@ RAM: <%= Arrays.toString(order.getRam()) %><br/>
 Storage: <%= Arrays.toString(order.getStorage()) %><br/>
 ราคา: <%= order.getPrice() %><br/>
 
+<br/>
+<a href="index.html">กลับไปที่หน้าแรก</a>
+<br/>
 <!-- Optional: Provide a link back to the order form -->
 <br/>
 <a href="addNewOrder.jsp">กลับไปที่ฟอร์มคำสั่งซื้อ</a>
+<br/>
+
+<!-- Button to go to the list of orders -->
+<a href="listOrders.jsp">
+    <button type="button">List Orders</button>
+</a>

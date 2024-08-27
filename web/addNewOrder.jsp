@@ -1,11 +1,11 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <h2>Add New Order</h2>
-<form action="AddNewOrderMySQL">
+<form action="AddNewOrderMySQL" method="post">
     <table>
         <tr>
             <td>Name:</td>
-            <td><input type="text" name="name"></td>
+            <td><input type="text" name="name" required></td> <!-- Parameter name is 'name' -->
         </tr>
         <tr>
             <td>Processor:</td>
