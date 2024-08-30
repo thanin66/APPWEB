@@ -7,9 +7,9 @@ package model;
 public class Order {
     private String name;
     private String processor;
-    private String vga; // Changed from 'VGA' to 'vga' for consistency
-    private String[] ram; // Changed to String array if multiple RAM values are expected
-    private String[] storage; // Changed to String array if multiple storage values are expected
+    private String vga; 
+    private String[] ram; 
+    private String[] storage; 
     private int price;
 
     // Getters
@@ -50,11 +50,11 @@ public class Order {
         this.vga = vga;
     }
 
-    public void setRam(String[] ram) { // Changed to accept String array
+    public void setRam(String[] ram) {
         this.ram = ram;
     }
 
-    public void setStorage(String[] storage) { // Changed to accept String array
+    public void setStorage(String[] storage) { 
         this.storage = storage;
     }
 
@@ -62,12 +62,4 @@ public class Order {
         this.price = price;
     }
 
-    public void setVGA(String vga) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public void setRAM(String[] ram) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
 }

@@ -6,6 +6,7 @@
     String url = "jdbc:mysql://localhost:3306/supershop";
     String user = "root";
     String password = "UBU_12345678";
+    String searchQuery = request.getParameter("searchQuery");
 
     Connection connection = null;
     Statement statement = null;
@@ -18,12 +19,26 @@
         connection = DriverManager.getConnection(url, user, password);
         // Create statement
         statement = connection.createStatement();
-        // Execute query to retrieve orders
+
+        // Modify the SQL query to include search functionality
         String query = "SELECT * FROM orders";
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            query += " WHERE name LIKE '%" + searchQuery + "%'";
+        }
+
         resultSet = statement.executeQuery(query);
 %>
 
 <h2>Order List</h2>
+<tr>
+    <a href="index.html">กลับไปที่หน้าแรก</a>
+<tr>
+<!-- Search form -->
+<form method="get" action="listOrders.jsp">
+    <input type="text" name="searchQuery" placeholder="Search by name" value="<%= (searchQuery != null) ? searchQuery : "" %>">
+    <input type="submit" value="Search">
+</form>
+
 <table border="1">
     <tr>
         <th>Name</th>
