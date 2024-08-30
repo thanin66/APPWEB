@@ -38,7 +38,6 @@ public class AddNewOrderMySQL extends HttpServlet {
             }
         }
 
-        // Create an instance of Order
         Order order = new Order();
         order.setName(name);
         order.setProcessor(processor);
@@ -47,13 +46,13 @@ public class AddNewOrderMySQL extends HttpServlet {
         order.setStorage(storage);
         order.setPrice(price);
 
-        // Insert into MySQL: table orders
+
         DBConnection dbConnection = new DBConnection();
         if (!dbConnection.insertNewOrder(order)) {
             System.out.println(">>> AddNewOrderMySQL ERROR");
-            // Handle insertion error: redirect to an error page or set an error attribute
+            
         } else {
-            // Successful insertion: forward to success page
+
             HttpSession session = request.getSession();
             session.setAttribute("order", order);
             ServletContext sc = getServletContext();

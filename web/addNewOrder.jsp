@@ -66,7 +66,7 @@
     <script>
         function updatePrice() {
             const processorPrice = {
-                "NVIDIA GeForce RTX 4090": 5,
+                "potato": 5,
                 "Intel Core i3-13100": 3000,
                 "Intel Core i3-12100": 2800,
                 "Intel Core i5-13600K": 10000,
@@ -318,4 +318,4 @@
         </form>
     </div>
 </body>
-</html>
+</html

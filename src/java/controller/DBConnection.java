@@ -6,7 +6,7 @@ import model.Order; // Ensure this import matches your Order model class
 public class DBConnection {
 
     public boolean insertNewOrder(Order order) {
-        boolean result = false; // Initialize result to false
+        boolean result = false; 
         Connection connection = null;
         PreparedStatement preparedStatement = null; // Declare PreparedStatement outside try
 
